@@ -69,6 +69,10 @@
             "AvaloniaUI.DiagnosticsSupport": {
               "target": "Package",
               "version": "[2.2.1, )"
+            },
+            "ScottPlot.Avalonia": {
+              "target": "Package",
+              "version": "[5.1.58, )"
             }
           },
           "imports": [

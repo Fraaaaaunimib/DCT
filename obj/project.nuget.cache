@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "s/CfaYv3w18=",
+  "dgSpecHash": "2nc0BZVPZlQ=",
   "success": true,
   "projectFilePath": "C:\\Users\\marco\\Documents\\DCT\\DCT.csproj",
   "expectedPackageFiles": [
@@ -30,8 +30,12 @@
     "C:\\Users\\marco\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
     "C:\\Users\\marco\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.0\\microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512",
     "C:\\Users\\marco\\.nuget\\packages\\microsoft.io.recyclablememorystream\\3.0.1\\microsoft.io.recyclablememorystream.3.0.1.nupkg.sha512",
+    "C:\\Users\\marco\\.nuget\\packages\\scottplot\\5.1.58\\scottplot.5.1.58.nupkg.sha512",
+    "C:\\Users\\marco\\.nuget\\packages\\scottplot.avalonia\\5.1.58\\scottplot.avalonia.5.1.58.nupkg.sha512",
     "C:\\Users\\marco\\.nuget\\packages\\skiasharp\\3.119.3-preview.1.1\\skiasharp.3.119.3-preview.1.1.nupkg.sha512",
+    "C:\\Users\\marco\\.nuget\\packages\\skiasharp.harfbuzz\\3.119.0\\skiasharp.harfbuzz.3.119.0.nupkg.sha512",
     "C:\\Users\\marco\\.nuget\\packages\\skiasharp.nativeassets.linux\\3.119.3-preview.1.1\\skiasharp.nativeassets.linux.3.119.3-preview.1.1.nupkg.sha512",
+    "C:\\Users\\marco\\.nuget\\packages\\skiasharp.nativeassets.linux.nodependencies\\3.119.0\\skiasharp.nativeassets.linux.nodependencies.3.119.0.nupkg.sha512",
     "C:\\Users\\marco\\.nuget\\packages\\skiasharp.nativeassets.macos\\3.119.3-preview.1.1\\skiasharp.nativeassets.macos.3.119.3-preview.1.1.nupkg.sha512",
     "C:\\Users\\marco\\.nuget\\packages\\skiasharp.nativeassets.webassembly\\3.119.3-preview.1.1\\skiasharp.nativeassets.webassembly.3.119.3-preview.1.1.nupkg.sha512",
     "C:\\Users\\marco\\.nuget\\packages\\skiasharp.nativeassets.win32\\3.119.3-preview.1.1\\skiasharp.nativeassets.win32.3.119.3-preview.1.1.nupkg.sha512",

@@ -13,7 +13,8 @@
           "Avalonia.Desktop": "12.0.1",
           "Avalonia.Fonts.Inter": "12.0.1",
           "Avalonia.Themes.Fluent": "12.0.1",
-          "AvaloniaUI.DiagnosticsSupport": "2.2.1"
+          "AvaloniaUI.DiagnosticsSupport": "2.2.1",
+          "ScottPlot.Avalonia": "5.1.58"
         },
         "runtime": {
           "DCT.dll": {}
@@ -419,6 +420,32 @@
           }
         }
       },
+      "ScottPlot/5.1.58": {
+        "dependencies": {
+          "HarfBuzzSharp.NativeAssets.Linux": "8.3.1.3",
+          "SkiaSharp": "3.119.3-preview.1.1",
+          "SkiaSharp.HarfBuzz": "3.119.0"
+        },
+        "runtime": {
+          "lib/net10.0/ScottPlot.dll": {
+            "assemblyVersion": "5.1.58.0",
+            "fileVersion": "5.1.58.0"
+          }
+        }
+      },
+      "ScottPlot.Avalonia/5.1.58": {
+        "dependencies": {
+          "Avalonia": "12.0.1",
+          "Avalonia.Skia": "12.0.1",
+          "ScottPlot": "5.1.58"
+        },
+        "runtime": {
+          "lib/net10.0/ScottPlot.Avalonia.dll": {
+            "assemblyVersion": "5.1.58.0",
+            "fileVersion": "5.1.58.0"
+          }
+        }
+      },
       "SkiaSharp/3.119.3-preview.1.1": {
         "dependencies": {
           "SkiaSharp.NativeAssets.Win32": "3.119.3-preview.1.1",
@@ -428,6 +455,18 @@
           "lib/net8.0/SkiaSharp.dll": {
             "assemblyVersion": "3.119.0.0",
             "fileVersion": "3.119.3.0"
+          }
+        }
+      },
+      "SkiaSharp.HarfBuzz/3.119.0": {
+        "dependencies": {
+          "HarfBuzzSharp": "8.3.1.3",
+          "SkiaSharp": "3.119.3-preview.1.1"
+        },
+        "runtime": {
+          "lib/net8.0/SkiaSharp.HarfBuzz.dll": {
+            "assemblyVersion": "3.119.0.0",
+            "fileVersion": "3.119.0.0"
           }
         }
       },
@@ -717,12 +756,33 @@
       "path": "microsoft.io.recyclablememorystream/3.0.1",
       "hashPath": "microsoft.io.recyclablememorystream.3.0.1.nupkg.sha512"
     },
+    "ScottPlot/5.1.58": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-prikNmFbV+z2ruXYmE06yYlnHQfuYzhPrrj30SvcUkRXfdiC07A+2LBSYhuSMaRFCHvgRKo6gXjfwHzhOW8ASg==",
+      "path": "scottplot/5.1.58",
+      "hashPath": "scottplot.5.1.58.nupkg.sha512"
+    },
+    "ScottPlot.Avalonia/5.1.58": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Bj+6y2MdkoctkvqhZdYFtJug91g/uBGmDfdlJ1MCr0DkTILfywVkUcA3g3plVF4zyk/urYV4XRhVd1oFN3Zqig==",
+      "path": "scottplot.avalonia/5.1.58",
+      "hashPath": "scottplot.avalonia.5.1.58.nupkg.sha512"
+    },
     "SkiaSharp/3.119.3-preview.1.1": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-+3ndwD845G4jfuyhtg5rrjryh2mEOr2QfAPFtncvAsRLzGX0ferSJ0223av6Sbw9zsEL6Wk0sk/DrXtEpJoo5A==",
       "path": "skiasharp/3.119.3-preview.1.1",
       "hashPath": "skiasharp.3.119.3-preview.1.1.nupkg.sha512"
+    },
+    "SkiaSharp.HarfBuzz/3.119.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-5ocGzl+RYEZFnUPUbModshnEFvKTku4hTtOBsLvy5MCK2KAHjq5Nw2+uAVUx79Rjh0z8fTojT6ZVav8MJgW0ug==",
+      "path": "skiasharp.harfbuzz/3.119.0",
+      "hashPath": "skiasharp.harfbuzz.3.119.0.nupkg.sha512"
     },
     "SkiaSharp.NativeAssets.Linux/3.119.3-preview.1.1": {
       "type": "package",

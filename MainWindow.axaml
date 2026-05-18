@@ -5,5 +5,7 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="DCT.MainWindow"
         Title="DCT">
-    Welcome to Avalonia!
+        
+        <TextBlock TextWrapping="Wrap" x:Name="test" />
+                
 </Window>

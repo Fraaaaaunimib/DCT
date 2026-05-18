@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Accord.Math" Version="3.8.0" />
     <PackageReference Include="Avalonia" Version="12.0.1" />
     <PackageReference Include="Avalonia.Desktop" Version="12.0.1" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="12.0.1" />

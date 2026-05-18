@@ -3,6 +3,12 @@ using Avalonia.Controls;
 using Accord.Math;
 using System.Diagnostics;
 using System;
+using System.Linq;
+using Accord;
+using System.Drawing;
+using ScottPlot;
+using Accord.IO;
+using ScottPlot.Avalonia;
 
 namespace DCT;
 
@@ -11,41 +17,25 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        List<List<double>> matrice = DCT2.matrice(10);
-        Stopwatch cronometro = Stopwatch.StartNew();
-        List<List<double>> matrice2 = DCT2.dct(matrice);
-        cronometro.Stop();
-        double tempo = cronometro.Elapsed.TotalMilliseconds;
-        
-        double[,] matriceAccord = Funzioni.convertitore(matrice);
+        List<Risultato> lista = [];
 
-        cronometro = Stopwatch.StartNew();
-        CosineTransform.DCT(matriceAccord);
-        cronometro.Stop();
-        double tempoA = cronometro.Elapsed.TotalMilliseconds;
+        AvaPlot avaPlot1 = this.Find<AvaPlot>("MioGrafico");
+        int[] dimensioni = {8, 16, 32, 64, 128, 256, 512, 1024};
+        foreach(int n in dimensioni){
+            lista.Add(Funzioni.calcoloDCT(n));
+        }
+        double[] yLog = lista.Select(r=>Math.Log10(Math.Max(r.tempo, 0.1))).ToArray();
+        double[] yLogA = lista.Select(r=>Math.Log10(Math.Max(r.tempoA, 0.1))).ToArray();
 
-        Console.WriteLine($"tempo: {tempo}   tempoA: {tempoA}" );        
+        avaPlot1.Plot.Clear();
 
-/*
-        for(int i = 0; i<10; i++)
-        {
-            for(int j = 0; j< 10; j++)
-            {
-                test.Text += matrice[i][j] + " ";
-                test2.Text += matrice2[i][j] + " ";
-                test3.Text += matriceAccord[i,j] + " ";
-            }
-            test.Text += "\n";
-            test2.Text += "\n";
-            test3.Text += "\n";
-            
-        }*/
+        var riga = avaPlot1.Plot.Add.Scatter(dimensioni, yLog);
+        riga.Color = ScottPlot.Colors.Red;
 
-        
-        MioGrafico.Plot.Clear();
+        var rigaAccord = avaPlot1.Plot.Add.Scatter(dimensioni, yLogA);
+        rigaAccord.Color = ScottPlot.Colors.Blue;
 
-        
-
-
+        avaPlot1.Plot.Axes.AutoScale();
+        avaPlot1.Refresh();
     }
 }

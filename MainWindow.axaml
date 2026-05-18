@@ -3,17 +3,19 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:scott="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d"
+        d:DesignWidth="800"
+        d:DesignHeight="450"
         x:Class="DCT.MainWindow"
-        Title="DCT">
-        <!--<StackPanel>
-                <TextBlock TextWrapping="Wrap" x:Name="test" Margin="0,5,0,0" FontSize="9"/>
-                <TextBlock TextWrapping="Wrap" x:Name="test2" Margin="0,5,0,0"/>
-                <TextBlock TextWrapping="Wrap" x:Name="test3"/>
-        </StackPanel>-->
+        Title="DCT"
+        Width="800"
+        Height="450">
 
-        <Grid RowDefinitions="Auto, *">
-                <scott:AvaPlot Grid.Row="1" Name="MioGrafico" Margin="10"/>
-        </Grid>
-        
+    <Grid>
+        <scott:AvaPlot Name="MioGrafico"
+                       Margin="10"
+                       HorizontalAlignment="Stretch"
+                       VerticalAlignment="Stretch"/>
+    </Grid>
+
 </Window>

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection.PortableExecutable;
+using System.Diagnostics;
+using Accord.Math;
 
 namespace DCT
 {
@@ -108,7 +110,7 @@ public class DCT2
 
 }
 
-public class Funzioni()
+public class Funzioni
     {
         public static double[,] convertitore(List<List<double>> list)
         {
@@ -122,6 +124,33 @@ public class Funzioni()
             }
             return risultato;
         }
-    }
 
+        public static Risultato calcoloDCT(int n)
+        {
+            List<List<double>> matrice = DCT2.matrice(n);
+            Stopwatch cronometro = Stopwatch.StartNew();
+            List<List<double>> matrice2 = DCT2.dct(matrice);
+            cronometro.Stop();
+            double tempo = cronometro.Elapsed.TotalMilliseconds;
+        
+            double[,] matriceAccord = Funzioni.convertitore(matrice);
+
+            cronometro = Stopwatch.StartNew();
+            CosineTransform.DCT(matriceAccord);
+            cronometro.Stop();
+            double tempoA = cronometro.Elapsed.TotalMilliseconds;
+
+            Console.WriteLine($"tempo: {tempo}   tempoA: {tempoA}" );      
+
+            return new Risultato(n, tempo, tempoA);
+        }
+    }
+public class Risultato(int N, double tempo, double tempoA)
+    {
+        public int N { get; set; } = N;
+        public double tempo { get; set; } = tempo;
+        public double tempoA { get; set; } = tempoA;
+
+
+    }
 }

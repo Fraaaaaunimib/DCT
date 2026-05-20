@@ -9,13 +9,81 @@
         x:Class="DCT.MainWindow"
         Title="DCT"
         Width="800"
-        Height="450">
+        Height="450"
+        Background="Transparent"
+        TransparencyLevelHint="AcrylicBlur"
+        ExtendClientAreaToDecorationsHint="False"
+        >
 
+    <!--    
     <Grid>
+        <TextBlock Text="FUNZIONA"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"/>
+               
         <scott:AvaPlot Name="MioGrafico"
                        Margin="10"
                        HorizontalAlignment="Stretch"
                        VerticalAlignment="Stretch"/>
+
     </Grid>
+-->
+    <DockPanel>
+        <ExperimentalAcrylicBorder IsHitTestVisible="False">
+        <ExperimentalAcrylicBorder.Material>
+                <ExperimentalAcrylicMaterial BackgroundSource="Digger" TintColor="{DynamicResource SystemAltHighColor}" 
+                TintOpacity="0.1" MaterialOpacity="0.1"/>
+            </ExperimentalAcrylicBorder.Material>         
+    </ExperimentalAcrylicBorder>   
+    
+    <Border DockPanel.Dock="Bottom" Height="28" Background="Transparent" BorderThickness="0">
+        <Panel>
+            <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}" 
+            Opacity="0.6"/>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0">
+                    <TextBlock Text="Messaggi" x:Name="testoMessaggi" FontSize="11" Opacity="0.5"/>
+            </StackPanel>
+        </Panel>
+    </Border>
+
+    <Grid Background="Transparent">
+    <Image x:Name="immagineOriginale" Stretch="Fill" RenderOptions.BitmapInterpolationMode="HighQuality"/>
+
+
+        <Border CornerRadius="8" Padding="12,8" Margin="15,15,0,0"
+        HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Border.Background>
+                <SolidColorBrush Color="{DynamicResource SystemChromeMediumColor}" Opacity="0.8"/>
+            </Border.Background>
+            <StackPanel Orientation="Vertical" Spacing="15">
+            <Button Content="Scegli immagine" Click="bottoneImmagine" Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+        Background="{DynamicResource ButtonBackground}" Padding="15,10">
+        <Button.Styles>
+            <Style Selector="Button:pointerover">
+                <Setter Property="Background" Value="{DynamicResource ButtonBackgroundPointerOver}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource SystemAccentColor}"/>
+            </Style>     
+        </Button.Styles>
+    </Button>   
+    
+    <StackPanel Orientation="Horizontal" Spacing="5">
+        <TextBlock Text="Valore F:" VerticalAlignment="Center"/>
+        <NumericUpDown x:Name="NumF"
+        Minimum="1" Maximum="32" Value="1" FormatString="0" Width="130" ValueChanged="cambioValoreF"/>
+
+    </StackPanel>
+
+    <StackPanel Orientation="Horizontal" Spacing="5">
+        <TextBlock Text="Valore d:" VerticalAlignment="Center"/>
+        <NumericUpDown x:Name="NumD"
+        Minimum="1" Maximum="32" Value="1" FormatString="0" Width="130"/>
+    </StackPanel>
+    
+    </StackPanel>
+        </Border>
+
+    </Grid>
+</DockPanel>
+
 
 </Window>

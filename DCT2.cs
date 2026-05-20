@@ -109,6 +109,43 @@ public class DCT2
             return risultato;
         }
 
+        public static List<List<double>> idct (List<List<double>> matrice)
+        {
+            List<List<double>> d = D_matrix(matrice.Count);
+            List<List<double>> dt = new List<List<double>>(matrice.Count);
+            for(int i = 0; i<matrice.Count; i++)
+            {
+                dt.Add([.. new double[matrice.Count]]);
+                for(int j = 0; j<matrice.Count; j++)
+                {
+                    dt[i][j] = d[j][i];
+                }
+            }
+            
+            List<List<double>> risultato = new List<List<double>>(matrice.Count);
+            for(int i = 0; i < matrice.Count; i++)
+            {
+                risultato.Add([.. new double[matrice.Count]]);
+                risultato[i] = cVector(dt, matrice[i]);
+            }
+
+            for(int j = 0; j < matrice.Count; j++)
+            {
+                List<double> array = [];
+                for(int i = 0; i<matrice.Count; i++)
+                {
+                    array.Add(risultato[i][j]);
+                }
+                array = cVector(dt, array);
+                for(int k = 0; k<matrice.Count; k++)
+                {
+                    risultato[k][j] = array[k];
+                }
+            }
+            return risultato;
+
+        }
+
 
 
 }
@@ -190,7 +227,7 @@ public class Funzioni
 
         }
 
-        public static double[,] convertiImmaginiBlocchi(double[,] matrice, int F)
+        public static double[,] convertiImmaginiBlocchi(double[,] matrice, int F, int d)
         {
             double[,] risultato = new double[matrice.GetLength(0), matrice.GetLength(1)];
             double[,] bloccoF = new double[F,F];
@@ -208,12 +245,25 @@ public class Funzioni
                     }
                     List<List<double>> conversione = convertitore(bloccoF);
                     conversione = DCT2.dct(conversione); 
-                    bloccoF = convertitore(conversione);
                     for (int k = 0; k < F; k++)
                     {
                         for (int l = 0; l < F; l++)
                         {
-                            risultato[k+i,l+j]=bloccoF[k,l];
+                            if (k+l >= d)
+                            {
+                                bloccoF[k,l] = 0.0;
+                            }
+                        }
+                    }
+                    conversione = DCT2.idct(conversione);
+
+                    bloccoF = convertitore(conversione);
+
+                    for (int k = 0; k < F; k++)
+                    {
+                        for (int l = 0; l < F; l++)
+                        {
+                            risultato[k+i,l+j]=Math.Clamp(bloccoF[k,l], 0.0, 255.0);
                         }
                     }
                 }
@@ -233,6 +283,8 @@ public class Funzioni
                 Console.Write("\n");
             }
         }
+
+
     }
 
 

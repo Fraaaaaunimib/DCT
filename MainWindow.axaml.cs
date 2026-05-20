@@ -95,7 +95,7 @@ public partial class MainWindow : Window
             }
 
             double[,] matriceImmagine = Funzioni.convertiImmagineMatrice(fileAperto);
-            matriceImmagine = Funzioni.convertiImmaginiBlocchi(matriceImmagine, (int)NumF.Value);
+            matriceImmagine = Funzioni.convertiImmaginiBlocchi(matriceImmagine, (int)NumF.Value, (int)NumD.Value);
             Funzioni.stampaMatriceDebug(matriceImmagine);
         }
     }

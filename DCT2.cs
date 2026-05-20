@@ -251,7 +251,7 @@ public class Funzioni
                         {
                             if (k+l >= d)
                             {
-                                bloccoF[k,l] = 0.0;
+                                conversione[k][l] = 0.0;
                             }
                         }
                     }
@@ -274,14 +274,16 @@ public class Funzioni
 
         public static void stampaMatriceDebug(double[,] matrice)
         {
+            Console.WriteLine("Stampa matrice DCT di debug: ");
             for (int i = 0; i < matrice.GetLength(0); i++)
             {
                 for (int j = 0; j < matrice.GetLength(1); j++)
                 {
-                    Console.Write(matrice[i,j] + " ");
+                    Console.Write(Math.Round(matrice[i, j], 0) + " ");
                 }
                 Console.Write("\n");
             }
+            Console.WriteLine("------------------------------");
         }
 
 

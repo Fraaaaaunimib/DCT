@@ -105,8 +105,10 @@ public partial class MainWindow : Window
         if (e.NewValue.HasValue)
         {
             NumD.Maximum = (decimal)((2*e.NewValue.Value)-2);
+            double[,] matriceImmagine = Funzioni.convertiImmagineMatrice(fileAperto);
+            matriceImmagine = Funzioni.convertiImmaginiBlocchi(matriceImmagine, (int)NumF.Value, (int)NumD.Value);
+            Funzioni.stampaMatriceDebug(matriceImmagine);
         }
     }
-
     
 }

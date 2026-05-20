@@ -180,9 +180,9 @@ public class Funzioni
                     for(int j = 0; j < larghezza; j++)
                     {
                         matrice[i,j]=(double)(arrayImmagine[(i*stride) + (j*4)]);
-                        Console.WriteLine(" ");
+                        //Console.Write(" ");
                     }
-                    Console.WriteLine("\n");
+                    //Console.Write("\n");
                 }
                 NativeMemory.Free(arrayImmagine);
             }
@@ -228,9 +228,9 @@ public class Funzioni
             {
                 for (int j = 0; j < matrice.GetLength(1); j++)
                 {
-                    Debug.Write(matrice[i,j] + " ");
+                    Console.Write(matrice[i,j] + " ");
                 }
-                Debug.Write("\n");
+                Console.Write("\n");
             }
         }
     }

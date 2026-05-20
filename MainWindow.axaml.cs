@@ -54,8 +54,8 @@ public partial class MainWindow : Window
 
 
     }
-    private async
-     void bottoneImmagine(object sender, RoutedEventArgs e)
+    
+    private async void bottoneImmagine(object sender, RoutedEventArgs e)
     {
         var topLevel = GetTopLevel(this);
         if(topLevel == null)

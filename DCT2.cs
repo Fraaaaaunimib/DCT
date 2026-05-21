@@ -6,6 +6,8 @@ using Accord.Math;
 using Avalonia.Media.Imaging;
 using Avalonia;
 using System.Runtime.InteropServices;
+using System.Security.Principal;
+using System.Threading;
 
 namespace DCT
 {
@@ -227,10 +229,11 @@ public class Funzioni
 
         }
 
-        public static double[,] convertiImmaginiBlocchi(double[,] matrice, int F, int d)
+        public static double[,] convertiImmaginiBlocchi(double[,] matrice, int F, int d, CancellationToken token)
         {
             double[,] risultato = new double[matrice.GetLength(0), matrice.GetLength(1)];
             double[,] bloccoF = new double[F,F];
+            token.ThrowIfCancellationRequested();
 
             for(int i = 0; i +F <=matrice.GetLength(0); i+=F)
             {
@@ -243,6 +246,8 @@ public class Funzioni
                             bloccoF[k,l] = matrice[k+i, l+j];
                         }
                     }
+
+                    token.ThrowIfCancellationRequested();
                     List<List<double>> conversione = convertitore(bloccoF);
                     conversione = DCT2.dct(conversione); 
                     for (int k = 0; k < F; k++)
@@ -255,6 +260,7 @@ public class Funzioni
                             }
                         }
                     }
+                    token.ThrowIfCancellationRequested();
                     conversione = DCT2.idct(conversione);
 
                     bloccoF = convertitore(conversione);
@@ -286,7 +292,30 @@ public class Funzioni
             Console.WriteLine("------------------------------");
         }
 
-
+        public static WriteableBitmap conversioneMatriceBitmap(double[,] matrice)
+        {
+            WriteableBitmap bitmap = new WriteableBitmap(new PixelSize(matrice.GetLength(1), matrice.GetLength(0)), 
+            new Avalonia.Vector(96, 96), Avalonia.Platform.PixelFormat.Bgra8888, Avalonia.Platform.AlphaFormat.Opaque);
+            using (var buffer = bitmap.Lock())
+            {
+                unsafe
+                {
+                    byte* ptr = (byte*)buffer.Address;
+                    for(int i = 0; i<matrice.GetLength(0); i++)
+                    {
+                        for(int j = 0; j<matrice.GetLength(1); j++)
+                        {
+                            long offset = (i*(matrice.GetLength(1)*4)) + (j*4);
+                            ptr[offset + 0] = (byte)matrice[i, j];
+                            ptr[offset + 1] = (byte)matrice[i, j];
+                            ptr[offset + 2] = (byte)matrice[i, j];
+                            ptr[offset + 3] = 255;
+                        }
+                    }
+                }
+            }
+            return bitmap;
+        }
     }
 
 

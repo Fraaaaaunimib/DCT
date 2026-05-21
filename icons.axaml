@@ -1,0 +1,30 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <Style>
+        <Style.Resources>
+            <StreamGeometry x:Key="IconPlay">
+                M 8,5.14 
+                C 8,4.38 8.82,3.9 9.48,4.28 
+                L 19.34,9.9 
+                C 20,10.28 20,11.24 19.34,11.62 
+                L 9.48,17.24 
+                C 8.82,17.62 8,17.14 8,16.38 
+                V 5.14 Z
+            </StreamGeometry>
+
+            <StreamGeometry x:Key="IconStop">
+                M 6,5 
+                H 18 
+                C 19.1,5 20,5.9 20,7 
+                V 17 
+                C 20,18.1 19.1,19 18,19 
+                H 6 
+                C 4.9,19 4,18.1 4,17 
+                V 7 
+                C 4,5.9 4.9,5 6,5 Z
+            </StreamGeometry>
+        </Style.Resources>
+    </Style>
+    
+</Styles>

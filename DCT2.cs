@@ -8,6 +8,7 @@ using Avalonia;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace DCT
 {
@@ -147,9 +148,6 @@ public class DCT2
             return risultato;
 
         }
-
-
-
 }
 
 public class Funzioni
@@ -214,15 +212,15 @@ public class Funzioni
                 byte* arrayImmagine = (byte*)NativeMemory.Alloc((nuint)(altezza*stride));
                 immagine.CopyPixels(new PixelRect(0, 0, larghezza, altezza), (nint)arrayImmagine, altezza*stride, stride);
 
-                for(int i = 0; i < altezza; i++)
+                Parallel.For(0, matrice.GetLength(0), i =>
                 {
                     for(int j = 0; j < larghezza; j++)
                     {
-                        matrice[i,j]=(double)(arrayImmagine[(i*stride) + (j*4)]);
+                        matrice[i,j] = arrayImmagine[(i*stride) + (j*4)];
                         //Console.Write(" ");
                     }
                     //Console.Write("\n");
-                }
+                });
                 NativeMemory.Free(arrayImmagine);
             }
             return matrice; 
@@ -232,18 +230,21 @@ public class Funzioni
         public static double[,] convertiImmaginiBlocchi(double[,] matrice, int F, int d, CancellationToken token)
         {
             double[,] risultato = new double[matrice.GetLength(0), matrice.GetLength(1)];
-            double[,] bloccoF = new double[F,F];
+            
             token.ThrowIfCancellationRequested();
 
             for(int i = 0; i +F <=matrice.GetLength(0); i+=F)
             {
-                for(int j = 0; j+F <= matrice.GetLength(1); j+=F)
+                //for(int j = 0; j+F <= matrice.GetLength(1); j+=F)
+                Parallel.For(0, (matrice.GetLength(1) - F)/F+1, j =>
                 {
+                    int colonnaPixel = j * F;
+                    double[,] bloccoF = new double[F,F];
                     for(int k = 0; k < F; k++)
                     {
                         for(int l = 0; l < F; l++)
                         {
-                            bloccoF[k,l] = matrice[k+i, l+j];
+                            bloccoF[k,l] = matrice[k+i, l+colonnaPixel];
                         }
                     }
 
@@ -269,10 +270,10 @@ public class Funzioni
                     {
                         for (int l = 0; l < F; l++)
                         {
-                            risultato[k+i,l+j]=Math.Clamp(bloccoF[k,l], 0.0, 255.0);
+                            risultato[k+i,l+colonnaPixel]=Math.Clamp(bloccoF[k,l], 0.0, 255.0);
                         }
                     }
-                }
+                });
             }
             return risultato;
             
@@ -301,18 +302,20 @@ public class Funzioni
                 unsafe
                 {
                     byte* ptr = (byte*)buffer.Address;
-                    for(int i = 0; i<matrice.GetLength(0); i++)
+                    Parallel.For(0, matrice.GetLength(0), i =>
                     {
                         for(int j = 0; j<matrice.GetLength(1); j++)
                         {
-                            long offset = (i*(matrice.GetLength(1)*4)) + (j*4);
+                            long offset = (i*matrice.GetLength(1)*4) + (j*4);
                             ptr[offset + 0] = (byte)matrice[i, j];
                             ptr[offset + 1] = (byte)matrice[i, j];
                             ptr[offset + 2] = (byte)matrice[i, j];
                             ptr[offset + 3] = 255;
                         }
-                    }
+                    });
                 }
+
+                
             }
             return bitmap;
         }

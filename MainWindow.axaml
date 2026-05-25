@@ -32,7 +32,7 @@
         <ExperimentalAcrylicBorder IsHitTestVisible="False">
         <ExperimentalAcrylicBorder.Material>
                 <ExperimentalAcrylicMaterial BackgroundSource="Digger" TintColor="{DynamicResource SystemAltHighColor}" 
-                TintOpacity="0.1" MaterialOpacity="0.1"/>
+                TintOpacity="0.1" MaterialOpacity="0.1" FallbackColor="DarkGray"/>
             </ExperimentalAcrylicBorder.Material>         
     </ExperimentalAcrylicBorder>   
     
@@ -78,7 +78,7 @@
     </Button>  
 
     <Button Click="bottoneStop" Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-        Background="{DynamicResource ButtonBackground}" Padding="15,10" x:Name="_bottoneStop">
+        Background="{DynamicResource ButtonBackground}" Padding="15,10" x:Name="_bottoneStop" ToolTip.Tip="Inizia la DCT">
         <PathIcon Data="{StaticResource IconPlay}" Width="16" Height="16" VerticalAlignment="Center" x:Name="iconaBottone"/>
         <Button.Styles>
             <Style Selector="Button:pointerover">
@@ -108,8 +108,8 @@
         <RadioButton Content="Fill" x:Name="fill" GroupName="selezione" IsCheckedChanged="proporzioneImmagine"/>
         <RadioButton Content="Stretch" x:Name="stretch" GroupName="selezione" IsCheckedChanged="proporzioneImmagine" IsChecked="true"/>
         
-        <Button Background="Transparent" Click="nascondiPannello" Padding="10">
-        <PathIcon Data="{StaticResource IconPlay}" Width="16" Height="16" VerticalAlignment="Center"/>
+        <Button Background="Transparent" Click="calcoloTest" Padding="10" ToolTip.Tip="Calcolo dei due test presenti nel pdf">
+        <PathIcon Data="{StaticResource IconGear}" Width="16" Height="16" VerticalAlignment="Center"/>
         <Button.Styles>
             <Style Selector="Button:pointerover">
                 <Setter Property="Background" Value="{DynamicResource ButtonBackgroundPointerOver}"/>

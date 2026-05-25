@@ -15,6 +15,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using System.Threading.Tasks;
 using System.Threading;
+using System.IO;
 
 namespace DCT;
 
@@ -87,6 +88,7 @@ public partial class MainWindow : Window
             DCT = false;
             abilitaUI();
         iconaBottone.Data = (Avalonia.Media.Geometry)this.FindResource("IconPlay");
+        ToolTip.SetTip(_bottoneStop, "Inizia la DCT");  
         } else if (fileAperto != null)
         {
             DCT = true;
@@ -144,6 +146,21 @@ public partial class MainWindow : Window
 
         if (files.Count > 0){
             try {
+                if(fileAperto != null)
+                {
+                    if(immagineDCT.Source is IDisposable DCTBitmap)
+                    {
+                        DCTBitmap.Dispose();
+                    }
+                    if(immagineOriginale.Source is IDisposable OriginalBitmap)
+                    {
+                        OriginalBitmap.Dispose();
+                    }
+                    immagineOriginale.Source = null;
+                    immagineDCT.Source = null;
+                    fileAperto.Dispose();
+                    fileAperto = null;
+                }
             fileAperto = new Bitmap(await files[0].OpenReadAsync());
             immagineOriginale.Source = fileAperto;
 
@@ -169,6 +186,7 @@ public partial class MainWindow : Window
         if (fileAperto == null) return;
         _bottoneStop.Cursor = new Avalonia.Input.Cursor(Avalonia.Input.StandardCursorType.Arrow);
         iconaBottone.Data = (Avalonia.Media.Geometry)this.FindResource("IconStop");
+        ToolTip.SetTip(_bottoneStop, "Ferma la DCT");
 
         _cts?.Cancel();
         _cts = new CancellationTokenSource();
@@ -191,25 +209,69 @@ public partial class MainWindow : Window
         {
             _cts.Dispose();
             _cts = null;
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+        }
+        if(immagineDCT.Source is IDisposable vecchiaBitmap)
+        {
+            vecchiaBitmap.Dispose();
+            immagineDCT.Source = null;
         }
         immagineDCT.Source = Funzioni.conversioneMatriceBitmap(matriceImmagine);
         iconaBottone.Data = (Avalonia.Media.Geometry)this.FindResource("IconPlay");
+        ToolTip.SetTip(_bottoneStop, "Inizia la DCT");
         NumF.Maximum = (decimal)immagineDCT.Source.Size.Width;
         abilitaUI();
     }
 
     private void cambioValoreF(object? sender, NumericUpDownValueChangedEventArgs e)
     {
-        if (e.NewValue.HasValue)
+        if(sender is NumericUpDown valore)
         {
-            NumD.Maximum = (decimal)((2*e.NewValue.Value)-2);
+            if (e.NewValue.HasValue)
+            {
+                if(valore == NumF)
+                    {
+                        NumD.Maximum =(2*e.NewValue.Value)-2;
+                    }           
+                    if (NumD.Value > NumD.Maximum)
+            {
+                NumD.Value = NumD.Maximum;
+            }
+            if(NumF.Value > NumF.Maximum)
+                {
+                    NumF.Value = (decimal)immagineDCT.Source.Size.Width;
+                }
+            }
+            else
+            {
+                valore.Value = 1;
+            }
         }
     }
 
-    private async void nascondiPannello(object sender, RoutedEventArgs e)
+    private async void calcoloTest(object sender, RoutedEventArgs e)
     {
-        var margine = boxBottone.Margin;
-        boxBottone.Margin = new Avalonia.Thickness((margine.Left - boxBottone.Width)+150, margine.Top, margine.Right, margine.Bottom);
+        //var margine = boxBottone.Margin;
+        // boxBottone.Margin = new Avalonia.Thickness((margine.Left - boxBottone.Width)+150, margine.Top, margine.Right, margine.Bottom);
+        List<List<double>> matrice = [[231, 32, 233, 161, 24, 71, 140, 245], [247, 40, 248, 245, 124, 204, 36, 107],
+        [234, 202, 245, 167, 9, 217, 239, 173], [193, 190, 100, 167, 43, 180, 8, 70], [11, 24, 210, 177, 81, 243, 8, 112],
+        [97, 195, 203, 47, 125, 114, 165, 181], [193, 70, 174, 167, 41, 30, 127, 245], [87, 149, 57, 192, 65, 129, 178, 228]];
+        List<List<double>> risultato = DCT2.dct(matrice);
+        Funzioni.stampaMatriceDebug(Funzioni.convertitore(risultato));
+
+        Console.WriteLine("\n");
+        List<double> array = [231, 32, 233, 161, 24, 71, 140, 245];
+        matrice = DCT2.D_matrix(8);
+
+        List<double> vector = DCT2.cVector(matrice, array);
+        foreach (double valore in vector)
+        {
+            Console.Write($"{valore:e2} ");
+        }
+        Console.WriteLine();
     }
     
 }

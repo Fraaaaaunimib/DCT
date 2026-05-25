@@ -1,21 +1,21 @@
 using System.Collections.Generic;
 using Avalonia.Controls;
-using Accord.Math;
-using System.Diagnostics;
+//using Accord.Math;
+//using System.Diagnostics;
 using System;
-using System.Linq;
-using Accord;
-using System.Drawing;
-using ScottPlot;
-using Accord.IO;
-using ScottPlot.Avalonia;
+//using System.Linq;
+//using Accord;
+//using System.Drawing;
+//using ScottPlot;
+//using Accord.IO;
+//using ScottPlot.Avalonia;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using System.Threading.Tasks;
 using System.Threading;
-using System.IO;
+//using System.IO;
 
 namespace DCT;
 
@@ -32,9 +32,11 @@ public partial class MainWindow : Window
         _bottoneStop.Cursor = new Avalonia.Input.Cursor(Avalonia.Input.StandardCursorType.No);
         NumF.IsEnabled = false;
         NumD.IsEnabled = false;
-        //this.Loaded += MainWindow_Loaded;
+        //this.Loaded += MainWindow_Loaded; 
+        //Per il primo punto del pdf fa partire il confronte della dct fatta in casa con quello della libreria Accord
     }
 
+    /*
     private async void MainWindow_Loaded(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         List<Risultato> lista = [];
@@ -60,17 +62,17 @@ public partial class MainWindow : Window
         rigaAccord.LegendText="DCT2 libreria Accord";
         avaPlot1.Plot.Axes.AutoScale();
         avaPlot1.Refresh();
-
-
     }
+    */
     
+    //Disabilita gli elementi dell'interfaccia utente, quando la DCT è in esecuzione
     private async void disabilitaUI()
     {
         _bottoneImmagine.IsEnabled = false;
         NumF.IsEnabled = false;
         NumD.IsEnabled = false;
     }
-
+    //Abilita gli elementi dell'interfaccia utente, quando la DCT non è in esecuzione
     private async void abilitaUI()
     {
         _bottoneImmagine.IsEnabled = true;
@@ -78,6 +80,7 @@ public partial class MainWindow : Window
         NumD.IsEnabled = true;
     }
 
+    //Bottone di inizio/interruzione della DCT
     private async void bottoneStop(object sender, RoutedEventArgs e)
     {
         if (_cts == null && fileAperto == null) {
@@ -96,6 +99,9 @@ public partial class MainWindow : Window
     }
     }
 
+    //Scelta modalità di visualizzazione dell'immagine
+    //Fill: mantiene la proporzione originale dell'immagine
+    //Stretch: riempe il contenitore con l'immagine
     private async void proporzioneImmagine(object sender, RoutedEventArgs e)
     {
         try {
@@ -121,7 +127,13 @@ public partial class MainWindow : Window
         }
     }
 
+    //Selezione un'immagine dal disco di tipo .bmp
     private async void bottoneImmagine(object sender, RoutedEventArgs e)
+    {
+        caricaImmagine();
+    }
+
+    private async void caricaImmagine()
     {
         var topLevel = GetTopLevel(this);
         if(topLevel == null)
@@ -179,7 +191,7 @@ public partial class MainWindow : Window
     }
 
 
-
+    //Esecuzione DCT
     public async void valoriDCT()
     {
         disabilitaUI();
@@ -226,6 +238,7 @@ public partial class MainWindow : Window
         abilitaUI();
     }
 
+    //Cambio valore di F e d
     private void cambioValoreF(object? sender, NumericUpDownValueChangedEventArgs e)
     {
         if(sender is NumericUpDown valore)
@@ -252,10 +265,9 @@ public partial class MainWindow : Window
         }
     }
 
+    //Test matrice e prima riga della matrice come richiesto dal pdf
     private async void calcoloTest(object sender, RoutedEventArgs e)
     {
-        //var margine = boxBottone.Margin;
-        // boxBottone.Margin = new Avalonia.Thickness((margine.Left - boxBottone.Width)+150, margine.Top, margine.Right, margine.Bottom);
         List<List<double>> matrice = [[231, 32, 233, 161, 24, 71, 140, 245], [247, 40, 248, 245, 124, 204, 36, 107],
         [234, 202, 245, 167, 9, 217, 239, 173], [193, 190, 100, 167, 43, 180, 8, 70], [11, 24, 210, 177, 81, 243, 8, 112],
         [97, 195, 203, 47, 125, 114, 165, 181], [193, 70, 174, 167, 41, 30, 127, 245], [87, 149, 57, 192, 65, 129, 178, 228]];

@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection.PortableExecutable;
 using System.Diagnostics;
 using Accord.Math;
 using Avalonia.Media.Imaging;
 using Avalonia;
 using System.Runtime.InteropServices;
-using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,6 +12,7 @@ namespace DCT
 {
 public class DCT2
 {
+    //Creazione matrice con numeri casuali
     public static List<List<double>> matrice(int n)
     {
         List<List<double>> matrice = new(n);
@@ -34,6 +33,7 @@ public class DCT2
         return matrice;
     }
 
+    //Matrice di trasformazione ortonormale
     public static List<List<double>> D_matrix(int n)
         {
             List<List<double>> D = new(n);
@@ -60,8 +60,9 @@ public class DCT2
                 }
             }
             return D;
-
         }
+
+    //Prodotto matrice vettore per la DCT 1D
     public static List<double> cVector(List<List<double>> D, List<double> f)
         {
             int n = f.Count;
@@ -76,6 +77,7 @@ public class DCT2
             return C;
         }
 
+    //DCT 2D: applicazione prima sulle righe e poi sulle colonne
     public static List<List<double>> dct(List<List<double>> matrice)
         {
             List<List<double>> d = D_matrix(matrice.Count);
@@ -112,6 +114,7 @@ public class DCT2
             return risultato;
         }
 
+        //Trasformata inversa IDCT 2D
         public static List<List<double>> idct (List<List<double>> matrice)
         {
             List<List<double>> d = D_matrix(matrice.Count);
@@ -152,6 +155,7 @@ public class DCT2
 
 public class Funzioni
     {
+        //Convertitore da tipo <List<List<double>> a tipo double[,]
         public static double[,] convertitore(List<List<double>> list)
         {
             double[,] risultato = new double[list.Count, list[0].Count];
@@ -165,6 +169,7 @@ public class Funzioni
             return risultato;
         }
 
+        //Overload-convertitore da tipo da tipo double[,] a tipo <List<List<double>>
         public static List<List<double>> convertitore(double[,] matrice)
         {
             
@@ -181,6 +186,7 @@ public class Funzioni
             return risultato;
         }
 
+        //Confronto tempistica tra DCT e DCT di Accord
         public static Risultato calcoloDCT(int n)
         {
             List<List<double>> matrice = DCT2.matrice(n);
@@ -201,6 +207,7 @@ public class Funzioni
             return new Risultato(n, tempo, tempoA);
         }
 
+        //Convertitore da immagine a matrice
         public static double[,] convertiImmagineMatrice(Bitmap immagine)
         {
             int larghezza = immagine.PixelSize.Width;
@@ -217,16 +224,14 @@ public class Funzioni
                     for(int j = 0; j < larghezza; j++)
                     {
                         matrice[i,j] = arrayImmagine[(i*stride) + (j*4)];
-                        //Console.Write(" ");
                     }
-                    //Console.Write("\n");
                 });
                 NativeMemory.Free(arrayImmagine);
             }
             return matrice; 
-
         }
 
+        //Esegue la DCT dividendo l'immagine in blocchi, applica la DCT per ogni blocco e poi ricompone l'immagine
         public static double[,] convertiImmaginiBlocchi(double[,] matrice, int F, int d, CancellationToken token)
         {
             double[,] risultato = new double[matrice.GetLength(0), matrice.GetLength(1)];
@@ -235,7 +240,6 @@ public class Funzioni
 
             for(int i = 0; i +F <=matrice.GetLength(0); i+=F)
             {
-                //for(int j = 0; j+F <= matrice.GetLength(1); j+=F)
                 Parallel.For(0, (matrice.GetLength(1) - F)/F+1, j =>
                 {
                     int colonnaPixel = j * F;
@@ -279,6 +283,7 @@ public class Funzioni
             
         }
 
+        //Stampa la matrice nella console di debug
         public static void stampaMatriceDebug(double[,] matrice)
         {
             Console.WriteLine("Stampa matrice DCT di debug: ");
@@ -293,6 +298,7 @@ public class Funzioni
             Console.WriteLine("------------------------------");
         }
 
+        //Convertitore matrice a immagine
         public static WriteableBitmap conversioneMatriceBitmap(double[,] matrice)
         {
             WriteableBitmap bitmap = new WriteableBitmap(new PixelSize(matrice.GetLength(1), matrice.GetLength(0)), 
@@ -321,8 +327,7 @@ public class Funzioni
         }
     }
 
-
-
+//Classe risultato per il confronto dei tempi
 public class Risultato(int N, double tempo, double tempoA)
     {
         public int N { get; set; } = N;

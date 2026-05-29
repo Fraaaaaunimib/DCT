@@ -282,9 +282,6 @@ public partial class MainWindow : Window
 
         if (vecchioZoom == nuovoZoom) return;
 
-        ScrollViewer activeScroll = scrollDCT.IsPointerOver ? scrollDCT : scrollOriginale;
-        Avalonia.Point posView = e.GetPosition(activeScroll);
-
         ZoomSlider.Value = nuovoZoom;
 
         e.Handled = true;

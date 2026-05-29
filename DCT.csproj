@@ -13,6 +13,23 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Runtime)' == 'win'">
+  <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+  <PublishSingleFile>true</PublishSingleFile>
+  <SelfContained>true</SelfContained>
+  <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+  <TrimMode>link</TrimMode>
+  </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Runtime)' == 'mac'">
+  <RuntimeIdentifier>osx-arm64</RuntimeIdentifier>
+  <PublishSingleFile>true</PublishSingleFile>
+  <SelfContained>true</SelfContained>
+  <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+  <TrimMode>link</TrimMode>
+  <EnableMacOSAppBundle>true</EnableMacOSAppBundle>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Accord.Math" Version="3.8.0" />
     <PackageReference Include="Avalonia" Version="11.3.4" />
@@ -26,3 +43,4 @@
     <PackageReference Include="ScottPlot.Avalonia" Version="5.1.58" />
   </ItemGroup>
 </Project>
+

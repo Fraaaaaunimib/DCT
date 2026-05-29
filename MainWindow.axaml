@@ -15,24 +15,12 @@
         ExtendClientAreaToDecorationsHint="False"
         >
 
-    <!--    
-    <Grid>
-        <TextBlock Text="FUNZIONA"
-               HorizontalAlignment="Center"
-               VerticalAlignment="Center"/>
-               
-        <scott:AvaPlot Name="MioGrafico"
-                       Margin="10"
-                       HorizontalAlignment="Stretch"
-                       VerticalAlignment="Stretch"/>
-
-    </Grid>
--->
+            
     <DockPanel>
         <ExperimentalAcrylicBorder IsHitTestVisible="False">
         <ExperimentalAcrylicBorder.Material>
                 <ExperimentalAcrylicMaterial BackgroundSource="Digger" TintColor="{DynamicResource SystemAltHighColor}" 
-                TintOpacity="0.1" MaterialOpacity="0.1" FallbackColor="DarkGray"/>
+                TintOpacity="0.3" MaterialOpacity="0.6" FallbackColor="DarkGray"/>
             </ExperimentalAcrylicBorder.Material>         
     </ExperimentalAcrylicBorder>   
     
@@ -49,16 +37,37 @@
     
     <Grid Background="Transparent">
     <Grid Background="Transparent" ColumnDefinitions="*, Auto, *">
-    <Image x:Name="immagineOriginale" Stretch="Fill" RenderOptions.BitmapInterpolationMode="HighQuality"/>
+    
+    <ScrollViewer Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" x:Name="scrollOriginale" ScrollChanged="ScrollOriginale_posizione">
+        <LayoutTransformControl>
+            <LayoutTransformControl.LayoutTransform>
+                <ScaleTransform ScaleX="{Binding #ZoomSlider.Value}" ScaleY="{Binding #ZoomSlider.Value}"/>
+            </LayoutTransformControl.LayoutTransform>
+            
+            <Grid Width="{Binding $parent[ScrollViewer].Bounds.Width}" Height="{Binding $parent[ScrollViewer].Bounds.Height}">
+                <Image x:Name="immagineOriginale" Stretch="Fill" RenderOptions.BitmapInterpolationMode="HighQuality"/>
+            </Grid>
+        </LayoutTransformControl>
+    </ScrollViewer>
 
-    <GridSplitter Grid.Column="1" Width="4" Background="Transparent" BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
-    BorderThickness="1, 0, 1, 0"/>
+    <GridSplitter Grid.Column="1" Width="4" Background="Transparent" 
+                  BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" BorderThickness="1, 0, 1, 0"/>
 
-    <Image x:Name="immagineDCT" Stretch="Fill" RenderOptions.BitmapInterpolationMode="HighQuality" Grid.Column="3"/>
+    <ScrollViewer Grid.Column="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" x:Name="scrollDCT" ScrollChanged="ScrollDCT_posizione">
+        <LayoutTransformControl>
+            <LayoutTransformControl.LayoutTransform>
+                <ScaleTransform ScaleX="{Binding #ZoomSlider.Value}" ScaleY="{Binding #ZoomSlider.Value}"/>
+            </LayoutTransformControl.LayoutTransform>
+            
+            <Grid Width="{Binding $parent[ScrollViewer].Bounds.Width}" Height="{Binding $parent[ScrollViewer].Bounds.Height}">
+                <Image x:Name="immagineDCT" Stretch="Fill" RenderOptions.BitmapInterpolationMode="HighQuality"/>
+            </Grid>
+        </LayoutTransformControl>
+    </ScrollViewer>
 
-    </Grid>
+</Grid>
 
-    <StackPanel>
+    <StackPanel Orientation="Vertical" Spacing="7">
     <Border CornerRadius="8" Padding="12,8" Margin="15,15,0,0"
         HorizontalAlignment="Left" VerticalAlignment="Top" x:Name="boxBottone">
             <Border.Background>
@@ -67,7 +76,7 @@
             <StackPanel Orientation="Vertical" Spacing="15">
                 <StackPanel Orientation="Horizontal" Spacing="15">
                     
-            <Button Content="Scegli immagine" Click="bottoneImmagine" Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+            <Button Content="Scegli immagine" Click="bottoneImmagine" Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}" HotKey="Ctrl+O" ToolTip.Tip="CTRL+O"
         Background="{DynamicResource ButtonBackground}" Padding="15,10" x:Name="_bottoneImmagine">
         <Button.Styles>
             <Style Selector="Button:pointerover">
@@ -77,8 +86,8 @@
         </Button.Styles>
     </Button>  
 
-    <Button Click="bottoneStop" Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-        Background="{DynamicResource ButtonBackground}" Padding="15,10" x:Name="_bottoneStop" ToolTip.Tip="Inizia la DCT">
+    <Button Click="bottoneStop" Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}" HotKey="Ctrl+D"
+        Background="{DynamicResource ButtonBackground}" Padding="15,10" x:Name="_bottoneStop" ToolTip.Tip="Inizia la DCT (CTRL+D)">
         <PathIcon Data="{StaticResource IconPlay}" Width="16" Height="16" VerticalAlignment="Center" x:Name="iconaBottone"/>
         <Button.Styles>
             <Style Selector="Button:pointerover">
@@ -104,7 +113,7 @@
         Minimum="1" Maximum="32" Value="1" FormatString="0" Width="130" ValueChanged="cambioValoreF"/>
     </StackPanel>
 
-    <StackPanel Orientation="Horizontal" Spacing="15">
+    <StackPanel Orientation="Horizontal" Spacing="15" Margin="0,0,0,0">
         <RadioButton Content="Fill" x:Name="fill" GroupName="selezione" IsCheckedChanged="proporzioneImmagine"/>
         <RadioButton Content="Stretch" x:Name="stretch" GroupName="selezione" IsCheckedChanged="proporzioneImmagine" IsChecked="true"/>
         
@@ -120,6 +129,11 @@
         </Button.Styles>
         </Button>
     </StackPanel>
+
+    <StackPanel Orientation="Horizontal" Spacing="15" Margin="0,-20,0,0">
+        <PathIcon Data="{StaticResource IconZoom}" Width="16" Height="16" VerticalAlignment="Center"/>
+        <Slider x:Name="ZoomSlider" Minimum="1.0" Maximum="10.0" Value="1.0" Width="170" VerticalAlignment="Center" ToolTip.Tip="{Binding #ZoomSlider.Value, StringFormat=\{0:F1\}x}"/>
+</StackPanel>
     
     </StackPanel>
         </Border>
@@ -130,3 +144,4 @@
 
 
 </Window>
+

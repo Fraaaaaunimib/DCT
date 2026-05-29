@@ -19,25 +19,29 @@ using System.Threading;
 
 namespace DCT;
 
-public partial class MainWindow : Window
+public partial class MainWindow : Window  
 {
     private CancellationTokenSource? _cts = null;
 
     private Bitmap? fileAperto = null;
 
     private bool? DCT = false;
+
+    private bool isSyncScroll = false;
     public MainWindow()
     {
         InitializeComponent();
         _bottoneStop.Cursor = new Avalonia.Input.Cursor(Avalonia.Input.StandardCursorType.No);
         NumF.IsEnabled = false;
         NumD.IsEnabled = false;
-        //this.Loaded += MainWindow_Loaded; 
+
+        this.AddHandler(Avalonia.Input.Gestures.PointerTouchPadGestureMagnifyEvent, Immagini_Zoom, Avalonia.Interactivity.RoutingStrategies.Bubble, true);
+       // this.Loaded += MainWindow_Loaded; 
         //Per il primo punto del pdf fa partire il confronte della dct fatta in casa con quello della libreria Accord
     }
 
-    /*
-    private async void MainWindow_Loaded(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    
+   /* private async void MainWindow_Loaded(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         List<Risultato> lista = [];
 
@@ -91,7 +95,7 @@ public partial class MainWindow : Window
             DCT = false;
             abilitaUI();
         iconaBottone.Data = (Avalonia.Media.Geometry)this.FindResource("IconPlay");
-        ToolTip.SetTip(_bottoneStop, "Inizia la DCT");  
+        ToolTip.SetTip(_bottoneStop, "Inizia la DCT (CTRL+D)");  
         } else if (fileAperto != null)
         {
             DCT = true;
@@ -174,7 +178,10 @@ public partial class MainWindow : Window
                     fileAperto = null;
                 }
             fileAperto = new Bitmap(await files[0].OpenReadAsync());
+
+            NumF.Maximum = (decimal)Math.Min(fileAperto.Size.Width, fileAperto.Size.Height);
             immagineOriginale.Source = fileAperto;
+            this.Title = "DCT - " + files[0].Path;
 
             } catch (Exception ex)
             {
@@ -233,7 +240,7 @@ public partial class MainWindow : Window
         }
         immagineDCT.Source = Funzioni.conversioneMatriceBitmap(matriceImmagine);
         iconaBottone.Data = (Avalonia.Media.Geometry)this.FindResource("IconPlay");
-        ToolTip.SetTip(_bottoneStop, "Inizia la DCT");
+        ToolTip.SetTip(_bottoneStop, "Inizia la DCT (CTRL+D)");
         NumF.Maximum = (decimal)immagineDCT.Source.Size.Width;
         abilitaUI();
     }
@@ -243,26 +250,60 @@ public partial class MainWindow : Window
     {
         if(sender is NumericUpDown valore)
         {
-            if (e.NewValue.HasValue)
-            {
+            if (e.NewValue.HasValue){
                 if(valore == NumF)
                     {
                         NumD.Maximum =(2*e.NewValue.Value)-2;
                     }           
-                    if (NumD.Value > NumD.Maximum)
-            {
-                NumD.Value = NumD.Maximum;
-            }
-            if(NumF.Value > NumF.Maximum)
-                {
-                    NumF.Value = (decimal)immagineDCT.Source.Size.Width;
-                }
-            }
-            else
+
+                if(NumF.Value > NumF.Maximum)
+                    {
+                        NumF.Value = NumF.Maximum;
+                    }
+
+                if (NumD.Value > NumD.Maximum)
+                    {
+                        NumD.Value = NumD.Maximum;
+                    }
+        }
+        else if (!e.NewValue.HasValue)
             {
                 valore.Value = 1;
             }
         }
+        
+    }
+
+    private void Immagini_Zoom(object sender, Avalonia.Input.PointerDeltaEventArgs e)
+{
+        double vecchioZoom = ZoomSlider.Value;
+        double zoomFactor = 1.0 + (e.Delta.Y * 0.5); 
+        double nuovoZoom = Math.Clamp(vecchioZoom * zoomFactor, ZoomSlider.Minimum, ZoomSlider.Maximum);
+
+        if (vecchioZoom == nuovoZoom) return;
+
+        ScrollViewer activeScroll = scrollDCT.IsPointerOver ? scrollDCT : scrollOriginale;
+        Avalonia.Point posView = e.GetPosition(activeScroll);
+
+        ZoomSlider.Value = nuovoZoom;
+
+        e.Handled = true;
+}
+
+    private void ScrollOriginale_posizione(object? sender, Avalonia.Controls.ScrollChangedEventArgs e)
+    {
+        if (isSyncScroll) return;
+        isSyncScroll = true;
+        scrollDCT.Offset = scrollOriginale.Offset;
+        isSyncScroll = false;
+    }
+
+    private void ScrollDCT_posizione(object? sender, Avalonia.Controls.ScrollChangedEventArgs e)
+    {
+        if (isSyncScroll) return;
+        isSyncScroll = true;
+        scrollOriginale.Offset = scrollDCT.Offset;
+        isSyncScroll = false;
     }
 
     //Test matrice e prima riga della matrice come richiesto dal pdf

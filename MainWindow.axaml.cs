@@ -199,7 +199,7 @@ public partial class MainWindow : Window
 
 
     //Esecuzione DCT
-    public async void valoriDCT()
+    private async void valoriDCT()
     {
         disabilitaUI();
         if (fileAperto == null) return;
